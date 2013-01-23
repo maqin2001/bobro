@@ -1,0 +1,81 @@
+#labels Featured,Phase-Implementation,Phase-Deploy,MotifCompareAndCluster
+#motif comparison and clustering.
+
+=Usage=
+The software called '*BBC*' has the following functions: 
+  # Compare diffrent motif profiles.
+  # Cluster motif profiles.
+  # Annotate motifs in aligned sequences.
+
+=Installation=
+Simply put '*BoBro2.0.tar.gz*' in any directory,
+  * $ tar zxvf BoBro2.0.tar.gz
+enter the folder '*BoBro2.0/*' and type
+  * $ ./INSTALL
+
+=Inputs and outputs=
+==The input file can be only sequences in standard *fasta* forma==
+*BBC* will run *BoBro* firstly to get the motif prediction, then cluster and annotate them back to aligned sequences.
+  * $ perl BBC.pl SequenceFile
+The three result files will be in folder '*SequenceFile.BBC*':
+  # Result about motif prediction: *SequenceFile.BBC/SequenceFile.closures*;
+  # Result about motif comparison is in *SequenceFile.BBC/SequenceFile.similarity*;
+  # Result about motif cluster and annotation is in *SequenceFile.BBC/SequenceFile.BBC*.
+
+==Users can input SequenceFile and known motif files in 4 format== 
+  * BoBro standard output: 0; 
+  * alignment: 1;
+  * matrix: 2;
+  * consensus: 3.
+
+the examples of the last three format are provided in current package (*motif_alignment, motif_consensus, motif_matrix*).
+
+  *$ perl BBC.pl SequenceFile motif_alignment [0/1/2/3]
+
+
+The three result files will be in folder '*SequenceFile.BBC*'
+  # Result about motif prediction: *SequenceFile.BBC/SequenceFile.motif_alignment.closures*;
+  # Result about motif comparison is in *SequenceFile.BBC/SequenceFile.motif_alignment.similarity*;
+  # Result about motif cluster and annotation is in *SequenceFile.BBC/SequenceFile.motif_alignment.BBC*;
+
+
+=Format of outputs=
+==Result file about motif comparison==
+Here is an example
+
+|| similarity||Motif-1|| Motif-2|| Motif-3|| Motif-4||
+|| Motif-1|| 0.00 (0-0)||0.18 (1-1)||0.15 (4-1)||0.24 (2-1) ||
+|| Motif-2|| 0.18 (1-1)||0.00 (0-0)||0.20 (2-1)||0.11 (3-1) ||
+|| Motif-3|| 0.15 (1-4)||0.20 (1-2)||0.00 (0-0)||0.27 (2-1) ||
+|| Motif-4|| 0.24 (1-2)||0.11 (1-3)||0.27 (1-2)||0.00 (0-0) ||
+
+This is comparison result for 4 motifs. The decimals in 4*4 matrix (leading diagonal excluded) mean similarity scores of corresponding motif pairs.
+
+==Result file about motif cluster and annotation==
+Here is an example of head information of the output file,
+
+
+||BOBRO-Based motif Comparison and Annotation (BBC) result:||
+||Input sequences:||        data.fasta;||
+||Predicted motifs:||       data.fasta.closures;||
+
+Motifs with hierarchical clustering:
+
+||Rank||    Name||    Length||  M(Motif rank)-(1st level cluster)-(2nd level cluster)||
+||1||       Motif-1|| 14 ||     M1_1_1||
+||2||       Motif-2|| 14 ||     M2_2_2||
+||3||       Motif-3|| 14 ||     M3_3_3||
+||4||       Motif-4|| 14 ||     M4_2_4||
+
+Above is the information of cluster result for 4 motifs, followed by annotation on aligned sequences. 
+The label like 'M1_1_1' is cluster information of motifs, the first number is original label of motifs (ranked by the decreasing order of z-score), the motifs with same second number means that they are in same cluster with fair similarity and same third number means they share high similarity.
+
+
+=Contact=
+Any questions, problems, bugs are welcome and should be dumped to
+
+Qin Ma <maqin2001@gmail.com>
+
+Bingqiang Liu <bingqiangsdu@gmail.com>
+
+Creation: 01/23/2013
