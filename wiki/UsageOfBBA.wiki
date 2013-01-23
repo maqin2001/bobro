@@ -1,5 +1,5 @@
 #summary One-sentence summary of this page.
-#labels MotifCorrelationAnalysis,Phase-Deploy,Featured
+#labels MotifCorrelationAnalysis,Phase-Deploy,Featured,Phase-Implementation
 
 =Usage=
 The script called *'BBA.pl'* is designed for motif 'co-occurrence Analysis'.
@@ -53,6 +53,9 @@ The data in result file have 7 columns with means:
 
 =Contact=
 Any questions, problems, bugs are welcome and should be dumped to
+
 Qin Ma <maqin2001@gmail.com>
+
 Bingqiang Liu <bingqiangsdu@gmail.com>
+
 Creation: DEC. 18, 2012
