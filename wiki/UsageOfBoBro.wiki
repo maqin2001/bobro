@@ -1,5 +1,5 @@
 #summary One-sentence summary of this page.
-#labels documentation,BoBro1.0,motiffinding
+#labels Featured,Phase-Implementation,MotifFinding
 
 = Introduction =
 
