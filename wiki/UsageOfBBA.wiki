@@ -1,5 +1,5 @@
 #summary One-sentence summary of this page.
-#labels motifcorrelationanalysis
+#labels MotifCorrelationAnalysis,Phase-Deploy,Featured
 
 =Usage=
 The script called *'BBA.pl'* is designed for motif 'co-occurrence Analysis'.
