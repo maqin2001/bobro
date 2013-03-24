@@ -105,7 +105,7 @@ The major program in the provided package is `BoBro`, it can parse standard FAST
 ==Contact==
 Any questions, problems, bugs are welcome and should be dumped to
 
-Qin Ma <maqin2001@gmail.com> in University of Georgia
+Qin Ma <maqin@uga.edu> in University of Georgia
 
 Bingqiang Liu <bingqiangsdu@gmail.com> in Shandong University
 
