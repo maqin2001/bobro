@@ -74,7 +74,7 @@ The label like 'M1_1_1' is cluster information of motifs, the first number is or
 =Contact=
 Any questions, problems, bugs are welcome and should be dumped to
 
-Qin Ma <maqin2001@gmail.com>
+Qin Ma <maqin@uga.edu>
 
 Bingqiang Liu <bingqiangsdu@gmail.com>
 
