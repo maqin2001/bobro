@@ -54,7 +54,7 @@ The data in result file have 7 columns with means:
 =Contact=
 Any questions, problems, bugs are welcome and should be dumped to
 
-Qin Ma <maqin2001@gmail.com>
+Qin Ma <maqin@uga.edu>
 
 Bingqiang Liu <bingqiangsdu@gmail.com>
 
