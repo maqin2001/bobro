@@ -75,7 +75,7 @@ All the output files are stored in the folder example_output, which contains:
 =Contact=
 Any questions, problems, bugs are welcome and should be dumped to
 
-Qin Ma <maqin2001@gmail.com>
+Qin Ma <maqin@uga.edu>
 
 Chuan Zhou <zhouchuan121@gmail.com>
 
