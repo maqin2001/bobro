@@ -16,7 +16,7 @@ enter the folder '*BoBro2.0/*' and type
 =Inputs and outputs=
 ==The input file can be only sequences in standard *fasta* forma==
 *BBC* will run *BoBro* firstly to get the motif prediction, then cluster and annotate them back to aligned sequences.
-  * $ perl BBC.pl SequenceFile
+  * $ perl BBC.pl SequenceFile 0 0
 The three result files will be in folder '*SequenceFile.BBC*':
   # Result about motif prediction: *SequenceFile.BBC/SequenceFile.closures*;
   # Result about motif comparison is in *SequenceFile.BBC/SequenceFile.similarity*;
@@ -37,6 +37,11 @@ The three result files will be in folder '*SequenceFile.BBC*'
   # Result about motif prediction: *SequenceFile.BBC/SequenceFile.motif_alignment.closures*;
   # Result about motif comparison is in *SequenceFile.BBC/SequenceFile.motif_alignment.similarity*;
   # Result about motif cluster and annotation is in *SequenceFile.BBC/SequenceFile.motif_alignment.BBC*;
+
+If want to change thresholds T1 and T2 (Defaults: 0.88 and 0.95) in clustering, please add the numbers you prefer to the end of the command. e.g.
+
+  *$ perl BBC.pl SequenceFile motif_alignment [0/1/2/3] 0.89 0.96
+  *$ perl BBC.pl SequenceFile 0 0 0.89 0.96
 
 
 =Format of outputs=
