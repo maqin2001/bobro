@@ -1,6 +1,4 @@
-#summary One-sentence summary of this page.
 #labels Featured,Phase-Implementation,MotifFinding
-
 = Introduction =
 
 BoBro1.0's documetation.
