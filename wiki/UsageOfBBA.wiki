@@ -1,6 +1,4 @@
-#summary One-sentence summary of this page.
 #labels MotifCorrelationAnalysis,Phase-Deploy,Featured,Phase-Implementation
-
 =Usage=
 The script called *'BBA.pl'* is designed for motif 'co-occurrence Analysis'.
 *Note*: The computer you use should have R installed.
