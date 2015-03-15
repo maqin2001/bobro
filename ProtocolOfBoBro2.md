@@ -1,0 +1,280 @@
+#the protocol of BoBro2.0: BBR, BBS, BBC and BBA.
+
+| **Functions**|	**BoBro2.0**|	**Unique feature**|
+|:-------------|:------------|:------------------|
+|Motif Refining|	BBR	|Strong  ability in filtering out noises at a genome scale|
+|Motif Scanning|	BBS	|p-value assessment for all the scanned candidate motifs|
+|Motif Comparison|	BBC|	Utilization of weak conserved signals of motifs’ flanking regions when comparing motifs; A motif clustering algorithm|
+|Motif Annotation|	BBA|	Motifs’ co-occurrence annotation|
+
+# Installation #
+Simply put "BoBro2.0.tar.gz" in any directory,
+  * $ tar zxvf BoBro2.0.tar.gz
+enter the folder "BoBro2.0/" and type
+  * $ ./INSTALL
+
+# BBR usage #
+
+The software called '**BBR**' has the following functions:
+  1. De-nove Motif finding in a fasta format promoter file.
+  1. De-nove Motif finding with background sequences (if have) in fasta format.
+  1. Motif finding with a comparative genomic framework.
+
+# BBR: CMD line #
+  * Simply run the following cmd to get a brief guide.
+> _$ perl BBR.pl_
+  * To do De-nove Motif finding in a fasta format promoter file:
+> _$ perl BBR.pl 1 promoters_
+  * To do De-nove Motif finding with background sequences (if have) in fasta format:
+> _$ perl BBR.pl 2 promoters background\_file_
+  * To do Motif finding with a comparative genomic framework:
+> _$ perl script/bbr\_cmp\_method.pl_
+
+
+# BBR: Inputs and outputs #
+## When used to do De-nove motif finding ##
+  * The promoter file and background\_file should be in standard fasta format,(see promoter and background file in this folder for example).
+
+  * The output file will be named promoters.closures, (see promoters.closures for example). Basically, it contains
+  1. input data summary
+  1. command line summary
+  1. for each motif candidate found, there will be detailed information:
+    * motif seed: the seed sequence used to find this motif(which is a 'core' of the motif);
+    * motif position weight matrix and consensus;
+    * a table show all the aligned motif.
+
+## When used to do Motif finding with a comparative genomic framework ##
+For the target genome and reference genomes, three kinds of data is needed:
+  1. the genome data (which could be downloaded from ncbi genebank);
+  1. the operon data (which could be downloaded or predicted from DOOR database);
+  1. the orthology relationship between the target and references (which could be predicted use RBH method or GOST);
+**NOTE**: Please see the the contents of folder example for details.
+
+Take _E. coli_ as the target genome, two other species as reference.
+
+  * target\_list: a list of gi from Ecoli;
+  * Ecoli.opr: operon structure of Ecoli;
+  * Escherichia\_coli\_K\_12\_substrMG1655\_uid57779: Ecoli data from NCBI;
+  * ncbi\_data: the directory contains the species reference information downloaded from NCBI;
+
+All the output files are stored in the folder example\_output, which contains:
+
+  1. result.txt: same as the a De-nove prediction;
+  1. motif.alignment: all alignments of predicted motif;
+  1. motif.alignment.similarity: similarity score between each motif, (same as the output of BBC);
+  1. Logos foreach motif are also given.
+
+## Data format ##
+  * peron: operon structure from DOOR;
+
+|1:|16077069 |
+|:-|:--------|
+|2:| 16077070 |
+|3:| 16077071 16077072 255767014 |
+|4: |16077074 |
+
+  * ortholog: orthology information between Ecoli and reference: (stanard output of GOST)
+|145698239,|187933779| 5e-90,|6e-90|
+|:---------|:--------|:------|:----|
+|145698257,|187933775| 2e-05,|3e-05|
+|145698262,|187935634| 1e-27,|6e-27|
+|145698268,|187932476| 2e-25,|9e-23|
+|145698269,|187933610| 5e-05,|7e-05|
+
+
+
+# BBS Usage #
+This software provides a BoBro Based Searching/Scanning (**BBS**) tool capable of searching motifs in a set of sequences using known motif patterns.
+
+# BBS: Inputs and outputs #
+The major program in the provided package is `*BBS*`, it can search motifs in a fasta file using known alignment, matrix format or consensus of motifs, and example files are provided (example\_alignment, example\_matrix and example consensus).
+
+## For basic usage of motif scanning ##
+Use packed PERL script BBS.pl by
+  * basic usage:
+> _$ perl BBS.pl_
+  * Search motif in alignment format:
+> _$ perl BBS.pl motif\_alignment promoters 1_
+  * Search motif in matrix format:
+> _$ perl BBS.pl motif\_matrix promoters 2_
+  * Search motif in consensus format
+> _$ perl BBS.pl motif\_consensus promoters 3_
+  * Search motif considering background genome:
+> _$ perl BBS.pl motif\_consensus promoters 1/2/3 background_
+
+## For advanced usage of motif scanning ##
+Use the program **BBS**
+  * basic usage:
+> _$ ./BBS -h (./BBS)_
+
+  * To search motif base on alignment
+> _$ ./BBS -i example -j example\_alignment_
+> _$ ./BBS -i example -j example\_alignment -D (output seed only)_
+
+**note**: the minimal length of sequences in example should not be less than the minimal motif length in example\_alignment
+
+  * To search motif base on frequency matrix
+> _$ ./BBS -i example -m example\_matrix_
+> BBS generates a output file, namely, '**.motifinfo**' file. In '.motifinfo' file, it generates a closures corresponding to each alignment (matrix) in example\_alignment (example\_matrix), in the increasing order of closure's pvalue.
+
+  * To calculate the zscore compare to the background
+> _$ ./BBS -i example -j example\_matrix -z example -u .95_
+
+  * To transfer consensus format to matrix
+> _$ ./BBS -p example\_consensus -i example > example\_consensus\_matrix_
+
+  * To compare similarity between any pair of input motifs
+> _$ ./BBS -i example -j example\_alignment -C_
+> _$ ./BBS -i example -j motif.txt -C (uninformative cloumn example)_
+
+  * To change alignment to matrix and consensus
+> _$ ./BBS -i example -j example\_alignment -a_
+
+  * Furthermore, we can control the output result mainly by controlling four parameters
+|-e| [1,3]| the larger the e value the more searched TFBSs  |
+|:-|:-----|:------------------------------------------------|
+| -t| (0.3,0.9)| the smaller the t value the more searched TFBSs|
+| -n| (0,0.3]| when e>1, the larger of n the stricter of searching strength|
+|-E|  | if you want to get more searched TFBSs, adding -E|
+
+# BBS: Input Formats #
+**Matrix**
+|A|    5   6   4   5   4   1   0   4   4   3   5   1   2   4   3   3   0   0   3   4   3   3   3   3   3|
+|:|:----------------------------------------------------------------------------------------------------|
+|C |    5   0   2   2   1   2   1   5   1   0   0   1   5   0   0   0   0   7   0   0   0   4   4   1   0|
+|G |    0   1   0   4   6   5   2   1   5   8   6   8   0   5   8   8   2   2   7   7   8   4   4   4   8|
+|T |    1   4   5   0   0   3   8   1   1   0   0   1   4   2   0   0   9   2   1   0   0   0   0   3   0|
+
+**Alignment**
+|ATCAACTGAAACAAAACGAAAGATT|
+|:------------------------|
+|GAAAACCATTATCTTTCGTTTTATT|
+|GACTTTCATTATGTTTCTTTTGTGA|
+|ACCAAGTGAAATGAAACGAAAGGCA|
+|AACTTTCAGTTTCTTTTCTATAGAT|
+|AAATTTCGTTTTATTTCTTTTTTCT|
+|GCAATCCCTTTTGCTTCCTTTATCT|
+|GCCTTTCTTTTTCTTTCGTTTTGAT|
+|CAGGGTCAATTAGCTTCGTTTTGAT|
+|GCAAAACGAAATGAAACGAAAGTTT|
+|AAGGTGGGCTTGCATTTGCTTAATA|
+
+**Consensus**
+|AGGRKTTBCCGA|
+|:-----------|
+
+# BBC Usage #
+The software called '**BBC**' has the following functions:
+  1. Compare diffrent motif profiles.
+  1. Cluster motif profiles.
+  1. Annotate motifs in aligned sequences.
+
+# BBC: Inputs and outputs #
+## The input file can be only sequences in standard **fasta** forma ##
+**BBC** will run **BoBro** firstly to get the motif prediction, then cluster and annotate them back to aligned sequences.
+  * $ perl BBC.pl SequenceFile
+The three result files will be in folder '**SequenceFile.BBC**':
+  1. Result about motif prediction: **SequenceFile.BBC/SequenceFile.closures**;
+  1. Result about motif comparison is in **SequenceFile.BBC/SequenceFile.similarity**;
+  1. Result about motif cluster and annotation is in **SequenceFile.BBC/SequenceFile.BBC**.
+
+## Users can input SequenceFile and known motif files in 4 format ##
+  * BoBro standard output: 0;
+  * alignment: 1;
+  * matrix: 2;
+  * consensus: 3.
+
+the examples of the last three format are provided in current package (**motif\_alignment, motif\_consensus, motif\_matrix**).
+
+  * perl BBC.pl SequenceFile motif\_alignment [0/1/2/3]
+
+
+The three result files will be in folder '**SequenceFile.BBC**'
+  1. Result about motif prediction: **SequenceFile.BBC/SequenceFile.motif\_alignment.closures**;
+  1. Result about motif comparison is in **SequenceFile.BBC/SequenceFile.motif\_alignment.similarity**;
+  1. Result about motif cluster and annotation is in **SequenceFile.BBC/SequenceFile.motif\_alignment.BBC**;
+
+
+# BBC: Format of outputs #
+## Result file about motif comparison ##
+Here is an example
+
+| similarity|Motif-1| Motif-2| Motif-3| Motif-4|
+|:----------|:------|:-------|:-------|:-------|
+| Motif-1| 0.00 (0-0)|0.18 (1-1)|0.15 (4-1)|0.24 (2-1) |
+| Motif-2| 0.18 (1-1)|0.00 (0-0)|0.20 (2-1)|0.11 (3-1) |
+| Motif-3| 0.15 (1-4)|0.20 (1-2)|0.00 (0-0)|0.27 (2-1) |
+| Motif-4| 0.24 (1-2)|0.11 (1-3)|0.27 (1-2)|0.00 (0-0) |
+
+This is comparison result for 4 motifs. The decimals in 4\*4 matrix (leading diagonal excluded) mean similarity scores of corresponding motif pairs.
+
+## Result file about motif cluster and annotation ##
+Here is an example of head information of the output file,
+
+
+|BOBRO-Based motif Comparison and Annotation (BBC) result:|
+|:--------------------------------------------------------|
+|Input sequences:|        data.fasta;|
+|Predicted motifs:|       data.fasta.closures;|
+
+Motifs with hierarchical clustering:
+
+|Rank|    Name|    Length|  M(Motif rank)-(1st level cluster)-(2nd level cluster)|
+|:---|:-------|:---------|:------------------------------------------------------|
+|1 |       Motif-1| 14 |     M1\_1\_1|
+|2 |       Motif-2| 14 |     M2\_2\_2|
+|3 |       Motif-3| 14 |     M3\_3\_3|
+|4 |       Motif-4| 14 |     M4\_2\_4|
+
+Above is the information of cluster result for 4 motifs, followed by annotation on aligned sequences.
+The label like 'M1\_1\_1' is cluster information of motifs, the first number is original label of motifs (ranked by the decreasing order of z-score), the motifs with same second number means that they are in same cluster with fair similarity and same third number means they share high similarity.
+
+# BBA Usage #
+The script called **'BBA.pl'** is designed for motif 'co-occurrence Analysis'.
+**Note**: The computer you use should have R installed.
+# BBA: CMD line #
+Simply run the following cmd to get a brief guide.
+  * $ perl BBA.pl
+BBA can do co-occurrence Analysis for file 'Input' by CMD:
+  * $ perl BBA.pl Input SequenceNum
+
+# BBA: Inputs #
+The input file include TF name and the sequence lables which contain binding sites of this TF(see '**Motif\_position\_for\_BBA**' for example).
+The format of input file:
+
+> >AcrR
+
+> _2251_
+
+> _1650_
+
+Here is a motif information for the TF AcrR: its name should have a prefix '>'; the number 2251 means there is a motif occurrence for AcrR in the 2251st promoter sequence.
+
+# BBA: Outputs #
+There are two output files: '**Input.BBA**' and '**Input.BBA.all**';
+
+The significantly co-occurred TF pairs are collected in "Input.BBA";
+Co-related scores for all TF pairs are stored in "Input.BBA.all";
+
+The data in result file have 7 columns with means:
+
+  1. TF1
+  1. TF2
+  1. Hyper-geometric p-value
+  1. Total sequences number
+  1. The number of sequences contain binding sites of TF1
+  1. The number of sequences contain binding sites of TF2
+  1. The number of sequences contain binding sites for both TF1 and TF2
+
+
+
+# Contact #
+Any questions, problems, bugs are welcome and should be dumped to
+
+  * Qin Ma <maqin2001@uga.edu>
+
+  * Bingqiang Liu <bingqiangsdu@gmail.com>
+
+  * Chuan Zhou <zhouchuan121@gmail.com>
+
+Creation: June. 27, 2012

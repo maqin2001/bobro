@@ -1,0 +1,89 @@
+#motif comparison and clustering.
+
+# Usage #
+The software called '**BBC**' has the following functions:
+  1. Compare diffrent motif profiles.
+  1. Cluster motif profiles.
+  1. Annotate motifs in aligned sequences.
+
+# Installation #
+Simply put '**BoBro2.0.tar.gz**' in any directory,
+  * $ tar zxvf BoBro2.0.tar.gz
+enter the folder '**BoBro2.0/**' and type
+  * $ ./INSTALL
+
+# Inputs and outputs #
+## The input file can be only sequences in standard **fasta** forma ##
+**BBC** will run **BoBro** firstly to get the motif prediction, then cluster and annotate them back to aligned sequences.
+  * $ perl BBC.pl SequenceFile 0 0
+The three result files will be in folder '**SequenceFile.BBC**':
+  1. Result about motif prediction: **SequenceFile.BBC/SequenceFile.closures**;
+  1. Result about motif comparison is in **SequenceFile.BBC/SequenceFile.similarity**;
+  1. Result about motif cluster and annotation is in **SequenceFile.BBC/SequenceFile.BBC**.
+
+## Users can input SequenceFile and known motif files in 4 format ##
+  * BoBro standard output: 0;
+  * alignment: 1;
+  * matrix: 2;
+  * consensus: 3.
+
+the examples of the last three format are provided in current package (**motif\_alignment, motif\_consensus, motif\_matrix**).
+
+  * perl BBC.pl SequenceFile motif\_alignment [0/1/2/3]
+
+
+The three result files will be in folder '**SequenceFile.BBC**'
+  1. Result about motif prediction: **SequenceFile.BBC/SequenceFile.motif\_alignment.closures**;
+  1. Result about motif comparison is in **SequenceFile.BBC/SequenceFile.motif\_alignment.similarity**;
+  1. Result about motif cluster and annotation is in **SequenceFile.BBC/SequenceFile.motif\_alignment.BBC**;
+
+If want to change thresholds T1 and T2 (Defaults: 0.88 and 0.95) in clustering, please add the numbers you prefer to the end of the command. e.g.(Set T1=0.89; T2=0.95)
+
+  * perl BBC.pl SequenceFile 0 0 0.89 0.96
+  * perl BBC.pl SequenceFile motif\_alignment [0/1/2/3] 0.89 0.96
+
+
+
+# Format of outputs #
+## Result file about motif comparison ##
+Here is an example
+
+| similarity|Motif-1| Motif-2| Motif-3| Motif-4|
+|:----------|:------|:-------|:-------|:-------|
+| Motif-1| 0.00 (0-0)|0.18 (1-1)|0.15 (4-1)|0.24 (2-1) |
+| Motif-2| 0.18 (1-1)|0.00 (0-0)|0.20 (2-1)|0.11 (3-1) |
+| Motif-3| 0.15 (1-4)|0.20 (1-2)|0.00 (0-0)|0.27 (2-1) |
+| Motif-4| 0.24 (1-2)|0.11 (1-3)|0.27 (1-2)|0.00 (0-0) |
+
+This is comparison result for 4 motifs. The decimals in 4\*4 matrix (leading diagonal excluded) mean similarity scores of corresponding motif pairs.
+
+## Result file about motif cluster and annotation ##
+Here is an example of head information of the output file,
+
+
+|BOBRO-Based motif Comparison and Annotation (BBC) result:|
+|:--------------------------------------------------------|
+|Input sequences:|        data.fasta;|
+|Predicted motifs:|       data.fasta.closures;|
+
+Motifs with hierarchical clustering:
+
+|Rank|    Name|    Length|  M(Motif rank)-(1st level cluster)-(2nd level cluster)|
+|:---|:-------|:---------|:------------------------------------------------------|
+|1 |       Motif-1| 14 |     M1\_1\_1|
+|2 |       Motif-2| 14 |     M2\_2\_2|
+|3 |       Motif-3| 14 |     M3\_3\_3|
+|4 |       Motif-4| 14 |     M4\_2\_4|
+
+Above is the information of cluster result for 4 motifs, followed by annotation on aligned sequences.
+The label like 'M1\_1\_1' is cluster information of motifs, the first number is original label of motifs (ranked by the decreasing order of z-score), the motifs with same second number means that they are in same cluster with fair similarity and same third number means they share high similarity.
+
+
+# Contact #
+Any questions, problems, bugs are welcome and should be dumped to
+
+Qin Ma <maqin@uga.edu>
+
+Bingqiang Liu <bingqiangsdu@gmail.com>
+
+Creation: 01/23/2013

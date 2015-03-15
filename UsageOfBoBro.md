@@ -1,0 +1,109 @@
+# Introduction #
+
+BoBro1.0's documetation.
+
+# Details #
+
+## Usage ##
+
+This software provides a tool capable of accurately extracting _cis_-regulatory motifs with their correct lengths even in thousands of promoters from a whole prokaryotic genome. For a FASTA file containing promoters, the program outputs a number of motif candidates, with increasing order of a designed _p_-value, containing the binding sites of identified motifs.
+
+
+## Installation ##
+
+Simply put "BoBro1.0.tar.gz" in any directory, and type
+
+_$ tar zxvf BoBro1.0.tar.gz_
+
+Enter the folder "BoBro1.0" and type "make" then the compiled program "BoBro" are within the same directory as the source.
+
+
+## Inputs and outputs ##
+
+The major program in the provided package is `BoBro`, it can parse standard FASTA files (allowing squences with different length in each line), and example file are provided in the main folder.
+
+  * To see help and look at all available options.
+
+> _$ ./BoBro -h (./BoBro)_
+
+  * Take a look at `example` first. And try to run BoBro under a specific length, which is not less than five, e.g. 14,
+
+> _$ ./BoBro -i example -l 14_
+
+> The program generates a output file, namely, 'inputfile.closures' containing all the motif closures (profiles) in the increasing order of their _p_-values.
+
+  * Then try to run BoBro recognizing the correct motif length in a given length range [L,U] by our program automatically,
+
+> _$ ./BoBro -i example -L 14 -U 16 -R 2_
+
+> where L and U are low and up boundary of motif length, respectively. We use this pair of parameters when we just know the motif length range instead of the accurate length in advance. Especially, when L equals to U, it is equivalent to finding motifs in a specific length: _$ ./BoBro -i example -L 14 -U 14_ is equivalent to _$ ./BoBro -i example -l 14_.  "-R 2" means that the we do iteration by 2 in each step, omitting the length 15 in current example.
+
+## Advanced Usage ##
+
+  * finding motifs with an annotation file
+> _$ ./BoBro -i example -j example\_anno_
+
+  * delete the redundancy of identified motifs by adding parameter -u, i.e. the similarity of any pair of identified motifs is lower than u.
+
+> _$ ./BoBro -i example -u 0.7_
+
+  * finding motifs regarding to palindromic, mirror, global and local motifs, respectively
+
+> _$ ./BoBro -i example -P (-M, -G, -C)_
+
+  * a fast version of BoBro by adding the parameter -F
+
+> _$./BoBro -i example -F_
+
+  * to get the motif seed cluster for an identified motif closure,
+
+> _$ ./BoBro -i example -F -N 7 -e 1_
+
+  * a FASTA file with a specific weight for each sequence is accepted see example\_weight as an example.
+
+> _$ ./BoBro -i example\_weight -W_
+
+  * to control the motif seed enlarge degree by the parameter -e.
+
+> _$ ./BoBro -i example -e 3_
+
+  * the two parameters -a and -N are to control the output closures' size -a [4,6] -N [0,3], the larger of a and N are the smaller of the closures' size are
+
+> _$ ./BoBro -i example -a 4 -N 0_
+
+  * the parameter -s to control simulation times when expand a motif seed to a closure.
+
+> _$ ./BoBro -i example -s 5_
+
+  * the parameter -A is a flag to calculate _p_-value approximately.
+
+> _$ ./BoBro -i example -A_
+
+  * the parameter -E is a flag to expand the closures with the smallest _p_-value.
+
+> _$ ./BoBro -i example -E_
+
+  * -w 1 means that do not consider two-ends-enhance motif pattern in prokaryotic genomes
+
+> _$ ./BoBro -i example -F -w 1_
+
+  * the zscore is added to evaluate the enrichment of each motif seed
+
+> _$ ./BoBro -i example -l 14 -F -Z NC\_000913.fna -b 0.95 -e 1_
+
+  * check the palindromic property of input sequences
+
+> _$ ./BoBro -i example.palindromic -q 20_
+
+  * to compile the code on MAC, use makefile\_mac.
+
+  * The folder BoBro\_cmake is a BoBro version with CMake.
+
+## Contact ##
+Any questions, problems, bugs are welcome and should be dumped to
+
+Qin Ma <maqin@uga.edu> in University of Georgia
+
+Bingqiang Liu <bingqiangsdu@gmail.com> in Shandong University
+
+Creation: July. 01, 2010
