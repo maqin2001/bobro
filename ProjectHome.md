@@ -12,7 +12,7 @@ Guojun Li, Bingqiang Liu, Qin Ma, Ying Xu, _A new framework for identifying cis-
 ## Citing us ##
 Qin Ma, Bingqiang Liu, Chuan Zhou, Yanbin Yin, Guojun Li, Ying Xu, _BoBro2.0: An integrated toolkit for accurate prediction and analysis of cis regulatory elements at a genome scale_. **Bioinformatics**, 10.1093/bioinformatics/btt397, 2013
 
-## Function ##
+## Function Abilities ##
 | **Functions**|	**BoBro2.0**|	**Unique feature**|
 |:-------------|:------------|:------------------|
 |Motif Refining|	BBR	|Strong  ability in filtering out noises at a genome scale|
